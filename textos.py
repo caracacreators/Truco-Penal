@@ -2,7 +2,7 @@
 
 dicPortugues = {'iniciar': 'Iniciar',
                 'configurar': 'Configurar',
-                'voltar': 'Voltar',
+                'voltar': 'OK',
                 'avatar': 'Avatar',
                 'contrato1': 'Contrato',
                 'contrato2': 'Eu aceito que sou um criminoso sujo.',

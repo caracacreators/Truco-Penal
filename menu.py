@@ -73,6 +73,8 @@ selectAvatar.append(selectHomem)
 selectPeter = pygame.image.load(resources.AVATAR_SELECT_PETER)
 selectAvatar.append(selectPeter)
 
+characterSheet = (resources.characterSheet())
+
 
 
 # /inicialização das Variaveis instanciadas
@@ -580,7 +582,7 @@ def verificarVencedorRodada(cartasJogadas, rodada, pontosJogador):
 # /Verifica quem jogou a carta com o maior valor.
 
 
-def jogar(idioma, nome, baralho, turno, rodada, pontosJogador, cartasComJogador, cartasJogadas, cartaVirada, distribuir_cartas, animacaoCarta, spritesBaralho, avatarJogador, tempoExibicaoRodada):
+def jogar(idioma, nome, baralho, turno, rodada, pontosJogador, cartasComJogador, cartasJogadas, cartaVirada, distribuir_cartas, animacaoCarta, spritesBaralho, avatarJogador, tempoExibicaoRodada, avatarSelected):
 
     if pygame.mixer.music.get_busy():
         pass
@@ -590,23 +592,27 @@ def jogar(idioma, nome, baralho, turno, rodada, pontosJogador, cartasComJogador,
     font = pygame.font.SysFont('Cooper Black', 45)
     font2 = pygame.font.SysFont('Cooper Black', 35)
     mouse = pygame.mouse.get_pos()
-    screen.blit(backgroundJogo, (0, 0))
+    screen.fill(resources.PRETO)
+    screen.blit(backgroundJogo, (0, 160))
+
 
     if distribuir_cartas:
         # Exibe o placar e a rodada.
         for i in range(3):
             screen.blit(fundoAvatarBg, jogoDic['posBgFundoAvatar'][i])
         # Desenha os Avatar
-        screen.blit(pygame.transform.flip(spriteSheetAvatar[avatarJogador[0]], -1, 0), jogoDic['posAvatar'][0])
-        screen.blit(pygame.transform.flip(spriteSheetAvatar[avatarJogador[1]], -1, 0), jogoDic['posAvatar'][1])
-        screen.blit(spriteSheetAvatar[avatarJogador[2]], jogoDic['posAvatar'][2])
+        characterSheet.draw(screen, avatarSelected, jogoDic['posAvatar'][0][0], jogoDic['posAvatar'][0][1])
+        characterSheet.draw(screen, avatarJogador[1], jogoDic['posAvatar'][1][0], jogoDic['posAvatar'][1][1])
+        characterSheet.draw(screen, avatarJogador[2], jogoDic['posAvatar'][2][0], jogoDic['posAvatar'][2][1])
+        # screen.blit(pygame.transform.flip(spriteSheetAvatar[avatarJogador[0]], -1, 0), jogoDic['posAvatar'][0])
+        # screen.blit(pygame.transform.flip(spriteSheetAvatar[avatarJogador[1]], -1, 0), jogoDic['posAvatar'][1])
+        # screen.blit(spriteSheetAvatar[avatarJogador[2]], jogoDic['posAvatar'][2])
         # /Desenha os Avatar
-
         screen.blit(font.render(str(pontosJogador[0]), 1, resources.PRETO), jogoDic['posPontoJogador1'])
         screen.blit(font.render(str(pontosJogador[1]), 1, resources.PRETO), jogoDic['posPontoJogador2'])
         screen.blit(font.render(str(pontosJogador[2]), 1, resources.PRETO), jogoDic['posPontoJogador3'])
         screen.blit(font2.render(str(nome), 1, resources.PRETO), jogoDic['posTextoNomeJogador1'])
-        screen.blit(font.render(idioma['embaralhar'], 1, resources.PRETO), (jogoDic['posTextoRodada'][0] - 40, jogoDic['posTextoRodada'][1]))
+        screen.blit(font.render(idioma['embaralhar'], 1, resources.BRANCO), (jogoDic['posTextoRodada'][0] - 40, jogoDic['posTextoRodada'][1]))
 
         # /Exibe o placar e a rodada.
         for event in pygame.event.get():
@@ -682,15 +688,19 @@ def jogar(idioma, nome, baralho, turno, rodada, pontosJogador, cartasComJogador,
         for i in range(3):
             screen.blit(fundoAvatarBg, jogoDic['posBgFundoAvatar'][i])
 
-        screen.blit(pygame.transform.flip(spriteSheetAvatar[avatarJogador[0]], -1, 0), jogoDic['posAvatar'][0])
-        screen.blit(pygame.transform.flip(spriteSheetAvatar[avatarJogador[1]], -1, 0), jogoDic['posAvatar'][1])
-        screen.blit(spriteSheetAvatar[avatarJogador[2]], jogoDic['posAvatar'][2])
+        characterSheet.draw(screen, avatarSelected, jogoDic['posAvatar'][0][0], jogoDic['posAvatar'][0][1],0,True)
+        characterSheet.draw(screen, avatarJogador[1], jogoDic['posAvatar'][1][0], jogoDic['posAvatar'][1][1],0, True)
+        characterSheet.draw(screen, avatarJogador[2], jogoDic['posAvatar'][2][0], jogoDic['posAvatar'][2][1])
+
+        # screen.blit(pygame.transform.flip(spriteSheetAvatar[avatarJogador[0]], -1, 0), jogoDic['posAvatar'][0])
+        # screen.blit(pygame.transform.flip(spriteSheetAvatar[avatarJogador[1]], -1, 0), jogoDic['posAvatar'][1])
+        # screen.blit(spriteSheetAvatar[avatarJogador[2]], jogoDic['posAvatar'][2])
 
         screen.blit(font.render(str(pontosJogador[0]), 1, resources.PRETO), jogoDic['posPontoJogador1'])
         screen.blit(font.render(str(pontosJogador[1]), 1, resources.PRETO), jogoDic['posPontoJogador2'])
         screen.blit(font.render(str(pontosJogador[2]), 1, resources.PRETO), jogoDic['posPontoJogador3'])
         screen.blit(font2.render(str(nome), 1, resources.PRETO), jogoDic['posTextoNomeJogador1'])
-        screen.blit(font.render(idioma['rodada'] + ' ' + str(rodada), 1, resources.PRETO), jogoDic['posTextoRodada'])
+        screen.blit(font.render(idioma['rodada'] + ' ' + str(rodada), 1, resources.BRANCO), jogoDic['posTextoRodada'])
         # /Desenha o Placar
 
     screen.blit(baralhoImg, jogoDic['posBralho'])
@@ -747,11 +757,6 @@ def jogar(idioma, nome, baralho, turno, rodada, pontosJogador, cartasComJogador,
     return 'jogando', baralho, turno, rodada, pontosJogador, cartasComJogador, cartasJogadas, cartaVirada, animacaoCarta, distribuir_cartas, spritesBaralho, avatarJogador
 
 
-
-
-
-
-
 def main():
     baralho = [0, 1, 2, 3,
                4, 5, 6, 7,
@@ -799,7 +804,7 @@ def main():
             estado, avatarJogador, avatarSelected = avatar(idioma, avatarJogador, avatarSelected)
         elif estado == 'jogando':
             estado, baralho, turno, rodada, pontosJogador, cartasComJogador, cartasJogadas, cartaVirada, animacaoCarta, distribuir_cartas, spritesBaralho, avatarJogador = \
-                jogar(idioma, nome, baralho, turno, rodada,  pontosJogador, cartasComJogador, cartasJogadas, cartaVirada, distribuir_cartas, animacaoCarta, spritesBaralho, avatarJogador, tempoExibicaoRodada)
+                jogar(idioma, nome, baralho, turno, rodada,  pontosJogador, cartasComJogador, cartasJogadas, cartaVirada, distribuir_cartas, animacaoCarta, spritesBaralho, avatarJogador, tempoExibicaoRodada, avatarSelected)
 
         clock.tick(config.FPS)
         pygame.display.update()

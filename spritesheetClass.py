@@ -1,6 +1,8 @@
 import pygame
 
 class Spritesheet():
+
+    pygame.init()
     def __init__(self, filename, cols, rows):
         self.sheet = pygame.image.load(filename).convert_alpha()
 
@@ -20,5 +22,8 @@ class Spritesheet():
                            (0,-centerCellH),(-centerCellW,-centerCellH),(-cellW,-centerCellH),
                             (0,-cellH),(-centerCellW, -cellH),(-cellW, -cellH)])
 
-    def draw(self, surface, cellIndex, x, y, handle=0):
-        surface.blit(self.sheet, (x+self.handle[handle][0], y+self.handle[handle][0]),self.cells[cellIndex])
+    def draw(self, surface, cellIndex, x, y, handle=0, flip=False):
+        if flip:
+            surface.blit(pygame.transform.flip(self.sheet, -1, 0),(x+self.handle[handle][0], y+self.handle[handle][0]), self.cells[cellIndex])
+        else:
+            surface.blit(self.sheet, (x+self.handle[handle][0], y+self.handle[handle][0]),self.cells[cellIndex])

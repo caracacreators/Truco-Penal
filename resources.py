@@ -2,7 +2,7 @@ import pygame
 import spritesheetClass
 
 BRANCO = (255, 255, 255)
-PRETO = (0, 0, 0)
+PRETO = (13, 13, 13)
 VERMELHO = (255, 0, 0)
 VERDE = (0, 255, 0)
 AZUL = (0, 0, 255)
@@ -15,7 +15,7 @@ FUNDO_CARTA = 'imagens/fundo.png'
 BARALHO = 'imagens/baralho.png'
 SPRITESHEET_BARALHO = pygame.image.load('imagens/sprite_baralho.png')
 SPRITESHEET_AVATAR = pygame.image.load('imagens/avatar_sprite_sheet.png')
-FUNDO_AVATAR = 'imagens/fundoAvatar.jpg'
+FUNDO_AVATAR = 'imagens/Fundo Avatar.png'
 IMAGEM1 = 'imagens/imagem1.jpg'
 
 LOGOK = 'imagens/projetoKlogo.png'
@@ -39,6 +39,8 @@ AVATAR_SELECT_PETER = 'imagens/avatar_SelectPage(4).png'
 frames = []  # Lista para armazenar as sprites do baralho.
 logo = []  # Lista para armazenar as sprites do Logo.
 avatar = []
+
+CHARACTER_SHEET = 'imagens/character_sheet.png'
 
 
 def spritesBaralho():
@@ -75,6 +77,11 @@ def avatarMenu():
     menuAvatar = spritesheetClass.Spritesheet(AVATAR_MENU,1,5)
 
     return menuAvatar
+
+def characterSheet():
+    characterSheet = spritesheetClass.Spritesheet(CHARACTER_SHEET,1,5)
+
+    return characterSheet
 
 def spriteAvatar():
     x = 0

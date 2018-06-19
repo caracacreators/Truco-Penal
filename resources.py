@@ -31,6 +31,11 @@ AVATAR_MENU = 'imagens/avatarSpritesheetMenu.png'
 fxCardAnim = 'audio/cardAnim.wav'
 gameplayMusic = 'audio/inGame.mp3'
 
+AVATAR_SELECT_MORTE = 'imagens/avatar_SelectPage.png'
+AVATAR_SELECT_BUROC = 'imagens/avatar_SelectPage(1).png'
+AVATAR_SELECT_HOMEM = 'imagens/avatar_SelectPage(2).png'
+AVATAR_SELECT_DIGI = 'imagens/avatar_SelectPage(3).png'
+AVATAR_SELECT_PETER = 'imagens/avatar_SelectPage(4).png'
 frames = []  # Lista para armazenar as sprites do baralho.
 logo = []  # Lista para armazenar as sprites do Logo.
 avatar = []

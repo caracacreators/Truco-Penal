@@ -7,8 +7,8 @@ import random
 # Dicionário de posicionamento do menu
 #                       XY Botao,  XY Texto
 menuDic = {'btStart': [(22, 300), (131, 451)], 'btConfig': [(22, 425), (275, 531)],
-           'btAvatar': [(580, 300), (503, 461)], 'nomeJogo': (0, 0), 'btVoltar': [(488, 529), (560, 540)],
-           'btLeft': (77, 434), 'btRight': (393, 434), 'opcaoIdioma': (152, 454), 'nomeMenu': (625, 195), 'posAvatarMenu': (365, 320), 'posAvatarLoja': (185, 266), 'btLeftAvatar': (77, 434), 'btRightAvatar': (343, 434),
+           'btAvatar': [(580, 300), (503, 461)], 'nomeJogo': (0, 0), 'btVoltar': [(488, 529), (500, 529)],
+           'btLeft': (77, 434), 'btRight': (393, 434), 'opcaoIdioma': (152, 454), 'nomeMenu': (320, 480), 'posAvatarMenu': (365, 320), 'posAvatarLoja': (0, 0), 'btLeftAvatar': (140, 254), 'btRightAvatar': (224, 254),
            'nomeTexto': (39, 514), 'contrato1': (325, 30), 'contrato2': (50, 120), 'contrato3': (30, 200), 'contrato4': (350, 250), 'contrato5': (50, 320), 'contrato6': (200, 380)}
 # /Dicionário de posicionamento do menu
 
@@ -58,7 +58,22 @@ hudMenu = (resources.spriteMenu())
 avatarMirror = pygame.image.load(resources.AVATAR_MIRROR)
 avatarMenu = (resources.avatarMenu())
 
-avatarSelect = 0
+
+indexAvatar = 0
+selectAvatar = []
+
+selectMorte = pygame.image.load(resources.AVATAR_SELECT_MORTE)
+selectAvatar.append(selectMorte)
+selectBuro = pygame.image.load(resources.AVATAR_SELECT_BUROC)
+selectAvatar.append(selectBuro)
+selectDigi = pygame.image.load(resources.AVATAR_SELECT_DIGI)
+selectAvatar.append(selectDigi)
+selectHomem = pygame.image.load(resources.AVATAR_SELECT_HOMEM)
+selectAvatar.append(selectHomem)
+selectPeter = pygame.image.load(resources.AVATAR_SELECT_PETER)
+selectAvatar.append(selectPeter)
+
+
 
 # /inicialização das Variaveis instanciadas
 
@@ -258,10 +273,10 @@ def enterNomePlayer(idioma, nome):
     return 'escreverNome', nomeTemp
 
 
-def menu(idioma, nome, avatarJogador):
+def menu(idioma, nome, avatarSelected):
     font = pygame.font.SysFont('Cooper Black', 45)
     mouse = pygame.mouse.get_pos()
-    anim.draw(screen,23,0,0,0)
+    anim.draw(screen,24,0,0,0)
 
     botaoRetIniciar = pygame.Rect(menuDic['btStart'][0][0], menuDic['btStart'][0][1], hudMenu.cellWidth, hudMenu.cellHeight)
     botaoRetConfigurar = pygame.Rect(menuDic['btConfig'][0][0], menuDic['btConfig'][0][1], botao.get_width(), botao.get_height()) #hudMenu.rect#
@@ -283,9 +298,10 @@ def menu(idioma, nome, avatarJogador):
         hudMenu.draw(screen, 9, menuDic['btAvatar'][0][0], menuDic['btAvatar'][0][1], 0)
 
 
-    screen.blit(font.render(nome, 1, resources.PRETO), menuDic['nomeMenu'])
+
     screen.blit(avatarMirror,(305,285))
-    avatarMenu.draw(screen, avatarSelect, 365,320)
+    avatarMenu.draw(screen, avatarSelected, 365,320)
+    screen.blit(font.render(nome, 1, resources.PRETO), menuDic['nomeMenu'])
     #screen.blit(pygame.transform.flip(pygame.transform.scale2x(spriteSheetAvatar[avatarJogador[0]]), -1, 0), (305,205))
 
     for event in pygame.event.get():
@@ -294,14 +310,14 @@ def menu(idioma, nome, avatarJogador):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if botaoRetIniciar.collidepoint(mouse):
                 print('Iniciar Jogo')
-                return 'jogando', avatarJogador
+                return 'jogando', avatarSelected
 
             elif botaoRetConfigurar.collidepoint(mouse):
                 print('Trocar para config')
-                return 'configuracao', avatarJogador
+                return 'configuracao', avatarSelected
             elif botaoRetAvatar.collidepoint(mouse):
-                return 'avatar', avatarJogador
-    return 'menu', avatarJogador
+                return 'avatar', avatarSelected
+    return 'menu', avatarSelected
 
 
 def configuracao(idioma, idiomaTexto):
@@ -340,7 +356,7 @@ def configuracao(idioma, idiomaTexto):
     return 'configuracao', idiomaTexto, idioma
 
 
-def avatar(idioma, avatarJogador):
+def avatar(idioma, avatarJogador, avatarSelected):
     font = pygame.font.SysFont('Cooper Black', 45)
     mouse = pygame.mouse.get_pos()
     screen.blit(backgroundMenu, (0, 0))
@@ -348,37 +364,73 @@ def avatar(idioma, avatarJogador):
     botaoRetLeft = pygame.Rect(menuDic['btLeftAvatar'][0], menuDic['btLeftAvatar'][1], left.get_width(), left.get_height())
     botaoRetRight = pygame.Rect(menuDic['btRightAvatar'][0], menuDic['btRightAvatar'][1], right.get_width(), right.get_height())
 
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if botaoRetLeft.collidepoint(mouse):
+                if avatarJogador[0] == 0:
+                    avatarJogador[0] = 4
+                    avatarSelected = 4
+                elif avatarJogador[0] == 4:
+                    avatarJogador[0] = 3
+                    avatarSelected = 3
+                elif avatarJogador[0] == 3:
+                    avatarJogador[0] = 2
+                    avatarSelected = 2
+                elif avatarJogador[0] == 2:
+                    avatarJogador[0] = 1
+                    avatarSelected = 1
+                elif avatarJogador[0] == 1:
+                    avatarJogador[0] = 0
+                    avatarSelected = 0
+                else:
+                    avatarJogador[0] = 0
+                    avatarSelected = 0
+            if botaoRetRight.collidepoint(mouse):
+                if avatarJogador[0] == 0:
+                    avatarJogador[0] = 1
+                    avatarSelected = 1
+                elif avatarJogador[0] == 1:
+                    avatarJogador[0] = 2
+                    avatarSelected = 2
+                elif avatarJogador[0] == 2:
+                    avatarJogador[0] = 3
+                    avatarSelected = 3
+                elif avatarJogador[0] == 3:
+                    avatarJogador[0] = 4
+                    avatarSelected = 4
+                elif avatarJogador[0] == 4:
+                    avatarJogador[0] = 0
+                    avatarSelected = 0
+                else:
+                    avatarJogador[0] = 0
+                    avatarSelected = 0
+
+
+
+                # if avatarJogador[0] < 4:
+                #     avatarJogador[0] += 1
+                #     avatarSelected +=1
+                # else:
+                #     avatarJogador[0] = 0
+                #     avatarSelected = 0
+            if botaoRetVoltar.collidepoint(mouse):
+                return 'menu', avatarJogador, avatarSelected
+
+    screen.blit(selectAvatar[avatarSelected],menuDic['posAvatarLoja'])
+    screen.blit(left, menuDic['btLeftAvatar'])
+    screen.blit(right, menuDic['btRightAvatar'])
     if botaoRetVoltar.collidepoint(mouse):
         screen.blit(botao2, menuDic['btVoltar'][0])
     else:
         screen.blit(botao, menuDic['btVoltar'][0])
     screen.blit(font.render(idioma['voltar'], 1, resources.PRETO), menuDic['btVoltar'][1])
 
-    screen.blit(left, menuDic['btLeftAvatar'])
-    screen.blit(right, menuDic['btRightAvatar'])
+    #avatarMenu.draw(screen, avatarSelected, menuDic['posAvatarLoja'][0], menuDic['posAvatarLoja'][1])
+    #screen.blit(pygame.transform.scale2x(spriteSheetAvatar[avatarJogador[0]]), menuDic['posAvatarLoja'])
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if botaoRetVoltar.collidepoint(mouse):
-                return 'menu', avatarJogador
-            if botaoRetLeft.collidepoint(mouse):
-                if avatarJogador[0] < 3:
-                    avatarJogador[0] += 1
-                else:
-                    avatarJogador[0] = 0
-            if botaoRetRight.collidepoint(mouse):
-                if avatarJogador[0] < 3:
-                    avatarJogador[0] += 1
-                else:
-                    avatarJogador[0] = 0
-
-    screen.blit(pygame.transform.scale2x(spriteSheetAvatar[avatarJogador[0]]), menuDic['posAvatarLoja'])
-
-    return 'avatar', avatarJogador
-
-
+    return 'avatar', avatarJogador, avatarSelected
 
 
 def entregarCartas(baralho):
@@ -719,10 +771,13 @@ def main():
     animacaoCarta = [192, 0]
     spritesBaralho = resources.spritesBaralho()
     apresentacao = 1
-    avatarJogador = [0] * 3
+    avatarJogador = [0] * 5
     avatarJogador[0] = 0
     avatarJogador[1] = 1
-    avatarJogador[2] = 3
+    avatarJogador[2] = 2
+    avatarJogador[3] = 3
+    avatarJogador[4] = 4
+    avatarSelected = 0
 
     pygame.init()
     pygame.font.init()
@@ -737,11 +792,11 @@ def main():
         elif estado == 'escreverNome':
             estado, nome = enterNomePlayer(idioma, nome)
         elif estado == 'menu':
-            estado, avatarJogador = menu(idioma, nome, avatarJogador)
+            estado, avatarSelected = menu(idioma, nome, avatarSelected)
         elif estado == 'configuracao':
             estado, idiomaTexto, idioma = configuracao(idioma, idiomaTexto)
         elif estado == 'avatar':
-            estado, avatarJogador = avatar(idioma, avatarJogador)
+            estado, avatarJogador, avatarSelected = avatar(idioma, avatarJogador, avatarSelected)
         elif estado == 'jogando':
             estado, baralho, turno, rodada, pontosJogador, cartasComJogador, cartasJogadas, cartaVirada, animacaoCarta, distribuir_cartas, spritesBaralho, avatarJogador = \
                 jogar(idioma, nome, baralho, turno, rodada,  pontosJogador, cartasComJogador, cartasJogadas, cartaVirada, distribuir_cartas, animacaoCarta, spritesBaralho, avatarJogador, tempoExibicaoRodada)
